@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="vue.js"></script>
+    <script src="axios.js"></script>
+    <link rel="stylesheet" href="app.css">
+  </head>
+<body>
+
+<div id="app">
+  <div class="slideShow">
+    <div class="picBox">
+      <div class="pic" v-for="(pic, idx) in pics" :key="idx" 
+        v-bind:style="{background:'url('+picFolder+pic+')', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center', backgroundColor:'#fafafa'}" 
+        v-bind:class="{fadeIn:idx==curPic, fadeOut:idx!=curPic&&!init }" 
+        @click="click_interval" ></div>
+      <div class="arrow arrowLeft" @click="arrow_prev"></div>
+      <div class="arrow arrowRight" @click="arrow_next"></div>
+    </div>
+    <div class="dotBox">
+      <div v-for="(pic, idx) in pics" :key="idx" @click="set_pic(idx)" v-bind:class="{dot:idx!=curPic, dotActive:idx==curPic }"></div>
+    </div>
+  </div>
+  <select class="intervalSelect" v-model="intervalDuration" @change="start_interval">
+    <option value="1000">1 Sekunde</option>
+    <option value="2000">2 Sekunde</option>
+    <option value="3000">3 Sekunde</option>
+    <option value="4000">4 Sekunde</option>
+    <option value="5000">5 Sekunde</option>
+    <option value="6000">6 Sekunde</option>
+    <option value="7000">7 Sekunde</option>
+    <option value="8000">8 Sekunde</option>
+    <option value="9000">9 Sekunde</option>
+    <option value="10000">10 Sekunde</option>
+  </select>
+  <img src="icon_reload.svg" class="reloadBtn" @click="call_pis_from_api" />
+</div>
+
+<script>
+var myObject = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!',
+    picFolder: 'pics/',
+    pics: [],
+    init:true,
+    intervalDuration: "3000",
+    chkInterval: false,
+    curPic: 0,
+    mode: "fade",
+    modes: ["fade", "slide"]
+  },
+  methods: {
+    
+    call_pis_from_api(){
+      axios.get("/api/pics").then(response => { 
+        // console.log(response.data);
+        this.pics = response.data.data;
+        this.start_interval();
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+    set_pic(idx){
+      this.stop_interval();
+      this.curPic = idx;
+    },
+    pic_prev(){
+      this.init = false;
+      let len = this.pics.length -1;
+      if(this.curPic == 0){
+        this.curPic = len;
+      }
+      else{
+        this.curPic = this.curPic - 1;
+      }
+    },
+    pic_next(){
+      this.init = false;
+      let len = this.pics.length -1;
+      if(this.curPic == len){
+        this.curPic = 0;
+      }
+      else{
+        this.curPic = this.curPic + 1;
+      }
+    },
+    arrow_prev(){
+      this.stop_interval();
+      this.pic_prev();
+    },
+    arrow_next(){
+      this.stop_interval();
+      this.pic_next();
+    },
+    
+    click_interval(){
+      this.pic_next();
+      this.start_interval();
+    },
+    start_interval(){
+      this.stop_interval();
+      this.chkInterval = setInterval(this.pic_next, parseInt(this.intervalDuration));
+    },
+    stop_interval(){
+      clearInterval(this.chkInterval);
+      this.chkInterval = false;
+    }
+  },
+  created: function(){
+    this.call_pis_from_api();
+  }
+})
+</script>
+
+</body>
+</html>

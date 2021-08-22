@@ -1,0 +1,127 @@
+body{
+  background-image: linear-gradient(#eee 10%, #cacaca 100%);
+  background-repeat: no-repeat;
+  background-color: #cacaca;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  padding: 1vh;
+  min-height:92vh;
+}
+
+.slideShow{
+  display: inline-block;
+  margin-top:10vh;
+  width: 60%;
+  min-width: 500px;
+  max-width: 1000px;
+  min-height: 100px;
+  /* background-color: #fff; */
+  text-align: center;
+}
+.slideShow .picBox{
+  position: relative;
+  padding:1%;
+}
+.slideShow .picBox .pic{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 60vh;
+  /* background: url(pics/pic_01.jpg); */
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: #cacaca;
+  border:1px solid #333;
+  box-shadow: 0px 1px 1px #fff;
+  opacity: 0;
+  /* cursor: grab; */
+}
+.slideShow .picBox .fadeIn {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 2s linear;
+}
+.slideShow .picBox .fadeOut {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
+.slideShow .dotBox{
+  width: 100%;
+  margin-top: 60vh;
+}
+.slideShow .dotBox .dot{
+  display: inline-block;
+  width:1.4vh;
+  height: 1.4vh;
+  border-radius: 1.4vh;
+  background-color: #333;
+  margin: 0.8vh;
+  cursor: pointer;
+}
+.slideShow .dotBox .dot:hover{
+  width:1.8vh;
+  height: 1.8vh;
+  margin: 0.6vh;
+  background-color: #000;
+}
+.slideShow .dotBox .dotActive{
+  display: inline-block;
+  width:1.8vh;
+  height: 1.8vh;
+  border-radius: 1.4vh;
+  background-color: #333;
+  margin: 0.6vh;
+  cursor: pointer;
+}
+
+.arrow {
+  position: absolute;
+  padding: 3vh; /* Arrow size */
+  box-shadow: 3px -3px 0 3px #222 inset;
+  -webkit-box-shadow: 4px -4px #222 inset;
+  border: solid transparent;
+  border-width: 0 0 2rem 2rem;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.arrow:hover {
+  box-shadow: 4px -4px 0 4px #222 inset;
+  -webkit-box-shadow: 5px -5px #222 inset;
+}
+.arrowUp    { transform:rotate(135deg) }
+.arrowRight{ 
+  transform:rotate(225deg);
+  right:-1.5vh;
+  top:25vh;
+}
+.arrowDown  { transform:rotate(-45deg) }
+.arrowLeft{ 
+  transform:rotate(45deg);
+  left:-1.5vh;
+  top:25vh;
+}
+
+.intervalSelect{
+  display: table;
+  margin: 2% auto auto auto;
+  padding: 6px;
+  min-width: 15%;
+  font-size: 14px;
+  background-color: #eee;
+  box-shadow: 0px 1px 1px #fff;
+  border:1px solid #333;
+}
+
+.reloadBtn{
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  width: 40px;
+  cursor: pointer;
+}
