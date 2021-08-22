@@ -21,8 +21,8 @@ picDir = os.path.join(curDir, "static", "pics")
 minioConf = {
   "minioBucketName": "pics",
   "minioAccessKey": "minio",
-  "minioSecretKey": "Oviss1234!",
-  "minioHost": "s3.minio.app-scape.lab",
+  "minioSecretKey": "minio",
+  "minioHost": "localhost:9000",
   "minioSecure": False
 }
 
