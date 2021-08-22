@@ -16,14 +16,29 @@ import json
 #-Some Globals-----------------------------------------------------
 curDir = os.path.dirname(os.path.realpath(__file__)) 
 picDir = os.path.join(curDir, "static", "pics")
-minioBucketName = "pics"
+
+#-Minio Config via env---
+minioConf = {
+  "minioBucketName": "pics",
+  "minioAccessKey": "minio",
+  "minioSecretKey": "minio",
+  "minioHost": "localhost:9000",
+  "minioSecure": False
+}
+
+for key, val in minioConf.items():
+  if key in os.environ:
+    minioConf[key] = os.environ[key]
+
+#-------------------------
+
 
 def create_minio_client():
   minioCli = Minio(
-    "s3.minio.app-scape.lab:80",
-    secure=False,
-    access_key="minio",
-    secret_key="Oviss1234!"
+    minioConf["minioHost"],
+    secure=minioConf["minioSecure"],
+    access_key=minioConf["minioAccessKey"],
+    secret_key=minioConf["minioSecretKey"]
   )
   return minioCli
 
@@ -46,10 +61,10 @@ def before_everything():
   except:
     return "Failed to connect to Bucket", 400  
 
-  res = minioCli.bucket_exists(minioBucketName)
+  res = minioCli.bucket_exists(minioConf["minioBucketName"])
   # print(res)
   if not res:
-    minioCli.make_bucket(minioBucketName)
+    minioCli.make_bucket(minioConf["minioBucketName"])
 
 #--------------------------------------
 @app.before_request
@@ -92,14 +107,14 @@ def api_pics_get():
   }
 
   minioCli = create_minio_client()
-  res = minioCli.list_objects(bucket_name=minioBucketName)
+  res = minioCli.list_objects(bucket_name=minioConf["minioBucketName"])
   bktImages = []
   for pic in res:
     if pic.object_name.endswith(".jpg") or pic.object_name.endswith(".png"):
       bktImages.append(pic.object_name)
       if pic.object_name not in picDir:
         minioCli.fget_object(
-          minioBucketName, pic.object_name, os.path.join(picDir, pic.object_name),
+          minioConf["minioBucketName"], pic.object_name, os.path.join(picDir, pic.object_name),
           version_id=pic.version_id,
         )
 
