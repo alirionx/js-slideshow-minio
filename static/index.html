@@ -34,6 +34,7 @@
     <option value="10000">10 Sekunde</option>
   </select>
   <img src="icon_reload.svg" class="reloadBtn" @click="call_pis_from_api" />
+  <div class="hostnameTag">{{backendHost}}</div>
 </div>
 
 <script>
@@ -43,6 +44,7 @@ var myObject = new Vue({
     message: 'Hello Vue!',
     picFolder: 'pics/',
     pics: [],
+    backendHost: "",
     init:true,
     intervalDuration: "3000",
     chkInterval: false,
@@ -56,6 +58,7 @@ var myObject = new Vue({
       axios.get("/api/pics").then(response => { 
         // console.log(response.data);
         this.pics = response.data.data;
+        this.backendHost = response.data.hostname;
         this.start_interval();
       })
       .catch(error => {

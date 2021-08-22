@@ -6,7 +6,7 @@ from minio import Minio
 
 import os
 import socket
-import yaml
+#import yaml
 import json
 
 
@@ -21,8 +21,8 @@ picDir = os.path.join(curDir, "static", "pics")
 minioConf = {
   "minioBucketName": "pics",
   "minioAccessKey": "minio",
-  "minioSecretKey": "minio",
-  "minioHost": "localhost:9000",
+  "minioSecretKey": "Oviss1234!",
+  "minioHost": "s3.minio.app-scape.lab",
   "minioSecure": False
 }
 
@@ -102,7 +102,8 @@ def api_pics_get():
   reqObj = {
     "method": request.method,
     "path": request.path,
-    "message": "Hello From the API",
+    "message": "",
+    "hostname": socket.gethostname(),
     "status": 200
   }
 
